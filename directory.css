@@ -1,0 +1,236 @@
+
+/*The following CSS was used and modified from the following resource:
+  *    Title: HubSpot CMS; HubDB Resource Library
+  *    Author: Katelyn, HubSpot CMS Developer
+  *    Date: 2020
+  *    Code version: n/a
+  *    Availability: https://designers.hubspot.com/code-gallery/entry/founders/katelynae-HubDB-Resource-Library
+ */
+
+
+.resources-sidebar-container {
+  width: 30%;
+}
+
+.sidebar-filters {
+    padding: 34px 22px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+.sidebar-filters h2 {
+    font-size: 19.5px;
+    font-weight: 400;
+    letter-spacing: 0;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e8e8e8;
+    color: #475761;
+}
+
+.sidebar-filters .filter-group {
+    border: none;
+    border-bottom: 2px solid #e8e8e8;
+    padding: 30px 0;
+    margin: 2px 0;
+}
+
+.sidebar-filters .filter-group h4 {
+    font-size: 15px;
+    font-weight: 400;
+    margin: 0 0 4px;
+    color: #475761;
+}
+.filter-group .filter-search {
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+    margin: 3px 0;
+}
+.filter-group a:hover {
+    color: #007a8c;
+    text-decoration: underline;
+}
+.resource-items-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    flex-shrink: 2;
+}
+
+.resource-items-container .resource-item {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+    background-color: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 2;
+    align-content: center;
+    position: relative;
+    transition: box-shadow .3s;
+    width: 31.5%;
+    margin-bottom: 25px;
+}
+.resource-items-container .resource-item .item-content {
+    padding: 19px;
+    order: 2;
+    transition: filter .3s;
+    line-height: normal;
+}
+.resource-item p {
+    font-size: smaller;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: .02em;
+    margin: 0;
+    color: #475761;
+}
+.title {
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+.resource-item p a {
+    color: #000;
+    font-weight: 500;
+    text-decoration: none;
+}
+.resources-pagination a {
+  color: #475761;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 1.24em;
+  padding: 20px;
+  text-align: center;
+}
+.filter-search form {
+  position: relative;
+}
+
+
+/* End citation */
+
+
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+select {
+  position: relative;
+  font-family: "AvenirNext","Helvetica Neue",Helvetica,Arial,sans-serif;
+  width: 100%;
+}
+img {
+ width: 100%; 
+}
+.mics {
+  width: 40%;
+  height: 50%;
+  float: right;
+  margin-top: 8px;
+  overflow: hidden;
+  max-width: 40%;
+}
+.bottom {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+.bottom-child {
+    -webkit-box-flex: 1 1 auto;
+    -moz-box-flex:  1 1 auto;
+    -webkit-flex:  1 1 auto;
+    -ms-flex:  1 1 auto;
+    flex:  1 1 auto;
+}
+.vbc {
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  background-color: #3fbfff;
+  transition: 0.3s;
+}
+.vbc a:link {
+  color: white;
+  text-decoration: none;
+}
+.vbc a:visited {
+  color: white;
+  text-decoration: none;
+}
+.apply{
+  background-color: #3fbfff; 
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+.apply a:link {
+  color: white;
+  text-decoration: none;
+}
+.apply a:visited {
+  color: white;
+  text-decoration: none;
+}
+body {
+    color: #33475b;
+    background-color: rgb(245, 248, 250);
+    font-family: "AvenirNext","Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 1.325;
+    margin: 0;
+    padding: 0;
+}
+body .resources-container {
+    max-width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+@media (max-width: 767px) {
+    .resources-container {
+        display:flex;
+        flex-direction:column;
+    }
+    .resources-results-container {
+        width: 100%;
+    }
+
+    .resources-container .span3 {
+       margin-bottom:1em;
+       flex-flow: row wrap;
+        justify-content: flex-end;
+    }
+    .resources-container .resources-results-container .resource-item {
+        width: 100%;
+        flex-direction: column;
+        flex-shrink: 2;
+        justify-content: space around;
+        order: 2;
+    }
+}
+@media (min-width: 767px) {
+    .resources-results-container {
+        width: 68%;
+    }
+}
