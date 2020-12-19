@@ -1,0 +1,237 @@
+{% set selectedIndustry = request.query_dict.industry|int %}
+{% set selectedLanguage = request.query_dict.language|int %}
+{% set selectedNeighborhood = request.query_dict.neighborhood|int %}
+{% set selectedContent = request.query_dict.content_rating|int %}
+
+
+<!--***************************************************************************************
+Below section defines the filter aside of the directory. I used and modified code from the following resources:
+
+For the HubL logic-
+*    Title: Let's Build a Real Estate Listing, using HubDB
+*    Author: Jonathan McLaren and other internal HubSpot CMS Developers
+*    Date: 2020
+*    Code version: n/a
+*    Availability: https://designers.hubspot.com/docs/tutorials/how-to-build-a-real-estate-listing-with-hubdb
+
+For the divs and classes (used in CSS)-
+*    Title: HubSpot CMS; HubDB Resource Library
+*    Author: Katelyn, HubSpot CMS Developer
+*    Date: 2020
+*    Code version: n/a
+*    Availability: https://designers.hubspot.com/code-gallery/entry/founders/katelynae-HubDB-Resource-Library
+*
+***************************************************************************************/ -->
+
+<div class="row-fluid resources-container">
+  <!-- FILTERS SIDEBAR -->
+  <div class="span3 widget-span resources-sidebar-container">
+    <div class="sidebar-filters">
+      <aside class="filters-content">
+          <h2>Filter Directory</h2>
+        <!--Filter by Industry. -->
+        <form id="form_id" method="get">
+            <div class="filter-group"> 
+               <h4>Industry:</h4>
+                              <select name="industry" form="form_id" onChange="this.form.submit()">
+                                <option value="0">Show All</option>
+                                {% set industries = hubdb_table_column(2686809, "industry").options %}
+                                {% for choice in industries %}
+                                    {% set industry_list = industry_list~choice.id|list%}
+                                    {% if choice.id == selectedIndustry %}
+                                    <option selected="selected" value="{{ choice.id }}">{{ choice.name }}</option>
+                                    {% else %}
+                                    <option value="{{ choice.id }}">{{ choice.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                              </select> 
+            </div>
+         
+        <!--Filter by Language. --> 
+             <div class="filter-group">
+               <h4>Language:</h4>
+                              <select name="language" form="form_id" onChange="this.form.submit()">
+                                <option value="0">Show All</option>
+                                {% set languages = hubdb_table_column(2686809, "language").options %}
+                                {% for choice in languages %}
+                                    {% set language_list = language_list~choice.id|list%}
+                                    {% if choice.id == selectedLanguage %}
+                                    <option selected="selected" value="{{ choice.id }}">{{ choice.name }}</option>
+                                    {% else %}
+                                    <option value="{{ choice.id }}">{{ choice.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                              </select> 
+              </div>
+   
+        <!--Filter by Neighborhood. -->
+            
+             <div class="filter-group">
+                 <h4>Neighborhood:</h4>
+                                <select name="neighborhood" form="form_id" onChange="this.form.submit()">
+                                  <option value="0">Show All</option>
+                                  {% set neighborhoods = hubdb_table_column(2686809, "neighborhood").options %}
+                                  {% for choice in neighborhoods %}
+                                      {% set neighborhood_list = neighborhood_list~choice.id|list%}
+                                      {% if choice.id == selectedNeighborhood %}
+                                      <option selected="selected" value="{{ choice.id }}">{{ choice.name }}</option>
+                                      {% else %}
+                                      <option value="{{ choice.id }}">{{ choice.name }}</option>
+                                      {% endif %}
+                                  {% endfor %}
+                                </select>  
+                </div>
+              
+
+        <!--Filter by Content Rating. -->
+              
+                <div class="filter-group">
+                  <h4>Content Rating:</h4>
+                                <select name="content_rating" form="form_id" onChange="this.form.submit()">
+                                  <option value="0">Show All</option>
+                                  {% set content_ratings = hubdb_table_column(2686809, "content_rating").options %}
+                                  {% for choice in content_ratings %}
+                                      {% set content_rating_list = content_rating_list~choice.id|list%}
+                                      {% if choice.id == selectedContent %}
+                                      <option selected="selected" value="{{ choice.id }}">{{ choice.name }}</option>
+                                      {% else %}
+                                      <option value="{{ choice.id }}">{{ choice.name }}</option>
+                                      {% endif %}
+                                  {% endfor %}
+                                </select> 
+                </div> 
+               </form> 
+              <input name="page" type="hidden" id="page" class="autocomplete"  placeholder="page">
+              <p>Interested in becoming a member Featured in our Directory?</p>
+              <button class="apply"><a href="https://www.tfocb.com/apply" target="_blank">Apply Now</a></button>
+      </aside>
+    </div>
+  </div>
+
+<!--***************************************************************************************
+Below section defines the pagination and query paramters of the directory. I used and modified code from the following resources:
+
+For the HubL logic around the query parameters that makes the filter logic work-
+*    Title: Let's Build a Real Estate Listing, using HubDB
+*    Author: Jonathan McLaren and other internal HubSpot CMS Developers
+*    Date: 2020
+*    Code version: n/a
+*    Availability: https://designers.hubspot.com/docs/tutorials/how-to-build-a-real-estate-listing-with-hubdb
+
+For the pagination-
+*    Title: HubSpot CMS; HubDB Resource Library
+*    Author: Katelyn, HubSpot CMS Developer
+*    Date: 2020
+*    Code version: n/a
+*    Availability: https://designers.hubspot.com/code-gallery/entry/founders/katelynae-HubDB-Resource-Library
+*
+***************************************************************************************/ -->
+  
+  
+<!-- sets the different query parameters using submitted input for hubdb query and pagination -->
+{% set page_size = 12 %} 
+{% set rowCount = hubdb_table(module.hubdb_table).row_count %}
+{% set pageCount =(rowCount/page_size)|round(0, 'ceil') %}
+{% if request.query_dict.page %}
+{% set page_num = request.query_dict.page|int %}
+{% else %}
+{% set page_num = 1 %}
+{% endif %}
+{% if page_num == "" or page_num == "1"%} 
+{% set offsetNum = page_size  %}
+{% else %}
+{% set offsetNum = (page_num)*page_size  %}
+{% endif %}  
+
+{% set queryparam = "" %}
+{% if selectedIndustry %}
+  {% set queryparam = queryparam ~ "&industry__contains=" ~ selectedIndustry|urlencode %}
+{% endif %}
+{% if selectedLanguage %}
+  {% set queryparam = queryparam ~ "&language__icontains="~selectedLanguage|urlencode %}
+{% endif %} 
+{% if selectedNeighborhood %}
+  {% set queryparam = queryparam ~ "&neighborhood__icontains="~selectedNeighborhood|urlencode %}
+{% endif %}
+{% if selectedContent %}
+  {% set queryparam = queryparam ~ "&content_rating__icontains="~selectedContent|urlencode %}
+{% endif %}
+{% if selectedIndustry and selectedLanguage and selectedNeighborhood and selectedContent %}
+  {% set queryparam = queryparam ~ "&industry__contains=" ~ selectedIndustry|urlencode ~ "&language__icontains=" ~ selectedLanguage|urlencode  ~ "&neighborhood__icontains=" ~ selectedNeighborhood|urlencode ~ "&content_rating__icontains="~selectedContent|urlencode %}
+{% endif %}
+
+
+
+{% set count = hubdb_table_rows(2686809, queryparam) %}
+{% set pageCount3 = count|length %}
+{% set pageCount4 =(pageCount3/page_size)|round(0, 'ceil') %}
+{% if offsetNum =="0" %}
+{% set queryparam = queryparam~"&limit=" + page_size %}
+{% else %}
+{% set queryparam = queryparam~"&limit="~offsetNum %}
+{% endif %}
+
+  
+<!--***************************************************************************************
+Below section defines the directory results and the rest of the pagination. I used and modified code from the following resources:
+
+For the HubL logic around displaying the results of my HubDB table-
+*    Title: Let's Build a Real Estate Listing, using HubDB
+*    Author: Jonathan McLaren and other internal HubSpot CMS Developers
+*    Date: 2020
+*    Code version: n/a
+*    Availability: https://designers.hubspot.com/docs/tutorials/how-to-build-a-real-estate-listing-with-hubdb
+
+For the last piece of pagination and for the divs that contain classes to be used in my CSS file-
+*    Title: HubSpot CMS; HubDB Resource Library
+*    Author: Katelyn, HubSpot CMS Developer
+*    Date: 2020
+*    Code version: n/a
+*    Availability: https://designers.hubspot.com/code-gallery/entry/founders/katelynae-HubDB-Resource-Library
+*
+***************************************************************************************/ -->
+<!--hubDB main table -->
+{% set table = hubdb_table_rows(2686809, queryparam) %}
+  
+<!--Display results from HubDB table-->
+{% if table == [] %}
+    
+    <p class='align-center'>Sorry, no listings found for that Search. Try changing your filter and search again.</p>
+{% else %}
+  <div class="resources-results-container">
+    <div class="resource-items-container">
+            {% for row in table %}
+                <div class="resource-item featured">
+                  <div class="item-content">
+                    <div class="{% for industry in row.industry %}industry-{{ industry.name }} {% endfor %}">
+                        <div id="img"><img class="card-img-top" src="{{ resize_image_url(row.photo.url,800) }}" loading="lazy"></div>
+                              <div class="title">
+                                <p><strong>{{ row.name }}</strong></p>
+                                <p>{{ row.job_title }}</p>
+                              </div>
+                              <div class="bottom">
+                                <button type="button" class="vbc"><a href="{{ row.vbc_url }}" target="_blank">Details</a></button>
+                                <div id="img2"><img class="mics" src="{{ row.mics.url }}" loading="lazy"></div>
+                              </div>
+                      </div>
+                   </div>            
+                </div>
+     
+  {% endfor %}
+      
+<!--final piece of pagination-->
+    </div>
+    {% set page_num = page_num + 1 %}
+    {% if page_num <= pageCount4 %}
+    {% if request.query_dict %}
+    {% set paginationPath = request.path + "?industries="+ request.query_dict.industry|urlencode +"&language=" + request.query_dict.language|urlencode +"&neighborhood=" + request.query_dict.neighborhood|urlencode +"&content_type=" + request.query_dict.content_type|urlencode + "&Name=" + "&page=" + page_num  %}
+    {% else %}
+    {% set paginationPath = request.path + "?&page=" + page_num  %}
+    {% endif %}
+    <div class="resources-pagination">
+      <a class="next-link resources-load-more" id="loadm" data-total-page-count="{{ pageCount4 }}" href="{{ paginationPath }}">Load More</a>  
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
